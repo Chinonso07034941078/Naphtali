@@ -26,4 +26,3 @@ Images use public Cloudinary delivery URLs from cloud `dnvgl9k4i`, so the site n
 ## Publish
 
 Run `npm run build` and deploy the generated `dist` folder to Vercel, Netlify, GitHub Pages or another static host.
-# Naphtali

@@ -5,11 +5,13 @@ const siteConfig = {
   whatsappNumber: "2347043290931",
 };
 
-const filters = [
-  { id: "all", label: "All work" },
-  { id: "identity", label: "Identity" },
-  { id: "campaign", label: "Campaigns" },
-  { id: "digital", label: "Digital" },
+const workSections = [
+  { id: "business-flyers", label: "Business / E Flyers", categories: ["business"] },
+  { id: "event-flyers", label: "Event Flyers", categories: ["events"] },
+  { id: "song-covers", label: "Song Art Covers", categories: ["songs"] },
+  { id: "logo-designs", label: "Logo Designs", categories: ["logos"] },
+  { id: "printed-materials", label: "Printed Materials", categories: ["print"] },
+  { id: "other-work", label: "Other Work", categories: ["other"] },
 ];
 
 function imageUrl(id, width = 900) {
@@ -31,7 +33,7 @@ function ProjectCard({ project, index, onOpen }) {
           onOpen(project);
         }
       }}
-      aria-label={`View ${project.title} project`}
+      aria-label={`View ${project.alt}`}
     >
       <div className="project-image relative overflow-hidden" data-tone={project.tone}>
         <img
@@ -42,22 +44,14 @@ function ProjectCard({ project, index, onOpen }) {
         />
         <span className="project-open" aria-hidden="true">↗</span>
       </div>
-      <div className="project-meta flex items-baseline justify-between gap-3">
-        <h3>{project.title}</h3>
-        <span>{project.kind}</span>
-      </div>
     </article>
   );
 }
 
 function App() {
-  const [activeFilter, setActiveFilter] = useState("all");
   const [selectedProject, setSelectedProject] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const lightboxRef = useRef(null);
-  const filteredProjects = activeFilter === "all"
-    ? projects
-    : projects.filter((project) => project.category === activeFilter);
 
   useEffect(() => {
     if (!selectedProject) return undefined;
@@ -104,47 +98,54 @@ function App() {
               <p className="hero-intro">I turn ideas into striking visual identities, campaign artwork and digital experiences that people actually remember.</p>
               <a className="round-link transition-transform hover:-rotate-6 hover:bg-acid" href="#work" aria-label="Explore selected work"><span>Explore<br />the work</span><b>↓</b></a>
             </div>
-            <div className="hero-stamp" aria-hidden="true"><span>IDEAS<br />MADE<br />VISIBLE</span><b>✳</b></div>
+            <div className="hero-stamp" aria-hidden="true"><span>IDEAS<br />MADE<br />VISIBLE</span><b>↓</b></div>
           </div>
-          <div className="hero-art relative overflow-hidden" aria-label="Featured design work">
-            <div className="hero-art-label"><span>VISUAL<br />PLAYGROUND</span><span>FIG. 001</span></div>
-            <div className="hero-image hero-image-main"><img src={imageUrl("upper_logo_014412_qkb9ke", 1100)} alt="Blue and white Jipe Ehelor logo design" /></div>
-            <div className="hero-image hero-image-cutout"><img src={imageUrl("path_branding_040916_vz3qqv", 800)} alt="Green Path brand graphic" /></div>
-            <div className="hero-art-orbit" aria-hidden="true">✳</div>
-            <div className="hero-art-foot"><span>BRAND WORLDS</span><span>BUILT TO BE SEEN&nbsp; ↗</span></div>
+          <div className="hero-art relative overflow-hidden" aria-label="Portrait of visual designer Erumaka Naphtali">
+            <img className="hero-portrait" src="/naphtali-portrait.jpg" alt="Erumaka Naphtali, visual designer" fetchPriority="high" />
+            <div className="hero-art-label"><span>ERUMAKA<br />NAPHTALI</span><span>OWERRI · NIGERIA</span></div>
+            <div className="hero-art-foot"><span>VISUAL DESIGNER</span><span>BRAND · CAMPAIGN · PRINT</span></div>
           </div>
         </section>
 
-        <div className="ticker" aria-hidden="true"><div className="ticker-track">VISUAL IDENTITY <b>✳</b> CAMPAIGN DESIGN <b>✳</b> DIGITAL ARTWORK <b>✳</b> BRAND SYSTEMS <b>✳</b> VISUAL IDENTITY <b>✳</b> CAMPAIGN DESIGN <b>✳</b> DIGITAL ARTWORK <b>✳</b> BRAND SYSTEMS <b>✳</b></div></div>
+        <div className="ticker" aria-hidden="true"><div className="ticker-track">VISUAL IDENTITY <b>•</b> CAMPAIGN DESIGN <b>•</b> DIGITAL ARTWORK <b>•</b> BRAND SYSTEMS <b>•</b> VISUAL IDENTITY <b>•</b> CAMPAIGN DESIGN <b>•</b> DIGITAL ARTWORK <b>•</b> BRAND SYSTEMS <b>•</b></div></div>
 
         <section id="work" className="work-section section-wrap">
           <div className="section-heading">
             <div><p className="eyebrow"><span className="section-number">01 /</span> THE GOOD STUFF</p><h2>Selected <em>work</em></h2></div>
-            <p className="section-note">A mix of identity, campaign and digital work. Tap any piece to take a closer look.</p>
+            <p className="section-note">Browse the work by type. Tap any piece to take a closer look.</p>
           </div>
-          <div className="filters flex flex-wrap gap-2" role="group" aria-label="Filter work by type">
-            {filters.map((filter) => (
-              <button
-                className={`filter-button transition-colors ${activeFilter === filter.id ? "is-active" : ""}`}
-                key={filter.id}
-                type="button"
-                data-filter={filter.id}
-                aria-pressed={activeFilter === filter.id}
-                onClick={() => setActiveFilter(filter.id)}
-              >{filter.label}{filter.id === "all" && <span>{projects.length}</span>}</button>
+          <nav className="filters flex flex-wrap gap-2" aria-label="Browse artwork sections">
+            {workSections.map((section) => (
+              <a className="filter-button transition-colors" key={section.id} href={`#${section.id}`}>
+                {section.label}<span aria-hidden="true">↘</span>
+              </a>
             ))}
+          </nav>
+          <div className="work-sections">
+            {workSections.map((section) => {
+              const sectionProjects = projects.filter((project) => section.categories.includes(project.category));
+              return (
+                <section className="work-category" id={section.id} key={section.id} aria-labelledby={`${section.id}-heading`}>
+                  <div className="work-category-heading"><h3 id={`${section.id}-heading`}>{section.label}</h3><span>{String(sectionProjects.length).padStart(2, "0")} PIECES</span></div>
+                  {sectionProjects.length ? (
+                    <div className="project-grid" aria-label={`${section.label} artwork`}>
+                      {sectionProjects.map((project) => (
+                        <ProjectCard key={project.id} project={project} index={projects.indexOf(project)} onOpen={setSelectedProject} />
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="category-empty">This section is ready for artwork from the collection.</p>
+                  )}
+                </section>
+              );
+            })}
           </div>
-          <div className="project-grid" aria-live="polite">
-            {filteredProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} index={projects.indexOf(project)} onOpen={setSelectedProject} />
-            ))}
-          </div>
-          <p className="asset-note"><span className="live-dot" /> ARTWORK HOSTED ON CLOUDINARY · MORE WORK ADDED AS THE COLLECTION GROWS</p>
+          <p className="asset-note"><span className="live-dot" /> ARTWORK HOSTED ON CLOUDINARY · BROWSE BY CATEGORY</p>
         </section>
 
         <section id="about" className="about-section relative overflow-hidden">
           <div className="section-wrap about-wrap">
-            <div className="about-side"><p className="eyebrow"><span className="section-number">02 /</span> THE PERSON BEHIND IT</p><div className="about-asterisk" aria-hidden="true">✳</div></div>
+            <div className="about-side"><p className="eyebrow"><span className="section-number">02 /</span> THE PERSON BEHIND IT</p></div>
             <div className="about-main"><h2 className="about-title">Meet Erumaka<br /><em>Naphtali.</em></h2><div className="about-copy">
               <p>I’m a visual designer based in Owerri, Imo State, Nigeria, focused on creating thoughtful and impactful visual communication.</p>
               <p>My work spans branding, graphic design, print design and motion, with an emphasis on clarity, strong visual direction and attention to detail.</p>
@@ -171,7 +172,6 @@ function App() {
         </section>
 
         <section id="contact" className="contact-section relative overflow-hidden">
-          <div className="contact-orbit" aria-hidden="true">✳</div>
           <div className="section-wrap contact-wrap relative z-10">
             <p className="eyebrow"><span className="section-number">04 /</span> YOUR IDEA, NEXT</p><h2>Let’s make<br />something <em>stick.</em></h2>
             <div className="contact-bottom flex items-center justify-between gap-5"><p>Have a project in mind? Tell me what you’re dreaming up.</p><a id="contact-link" className="contact-button transition-transform hover:-translate-y-1" href={whatsappUrl} target="_blank" rel="noopener noreferrer">Start a conversation <span>↗</span></a></div>
@@ -186,7 +186,7 @@ function App() {
         {selectedProject && <>
           <button className="lightbox-close" type="button" aria-label="Close project preview" onClick={() => setSelectedProject(null)}>×</button>
           <div className="lightbox-image-wrap"><img src={imageUrl(selectedProject.id, 1600)} alt={selectedProject.alt} /></div>
-          <div className="lightbox-caption"><span>{selectedProject.kind}</span><h2>{selectedProject.title}</h2><p>{selectedProject.description}</p></div>
+          <div className="lightbox-caption"><span>{workSections.find((section) => section.categories.includes(selectedProject.category))?.label}</span></div>
         </>}
       </dialog>
     </div>
