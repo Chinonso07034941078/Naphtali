@@ -90,24 +90,19 @@ function App() {
       </header>
 
       <main id="top" className="min-h-screen">
-        <section className="hero section-wrap relative grid items-center">
+        <section className="hero section-wrap relative items-center">
           <div className="hero-copy relative z-10">
             <p className="eyebrow"><span className="live-dot" /> VISUAL DESIGNER · OWERRI, NIGERIA <span className="eyebrow-year">— PORTFOLIO / 2026</span></p>
             <h1>Good design<br />has <em>presence.</em></h1>
-            <div className="hero-bottom flex items-end">
+            <div className="hero-bottom">
               <p className="hero-intro">I turn ideas into striking visual identities, campaign artwork and digital experiences that people actually remember.</p>
-              <a className="round-link transition-transform hover:-rotate-6 hover:bg-acid" href="#work" aria-label="Explore selected work"><span>Explore<br />the work</span><b>↓</b></a>
             </div>
             <div className="hero-stamp" aria-hidden="true"><span>IDEAS<br />MADE<br />VISIBLE</span><b>↓</b></div>
           </div>
-          <div className="hero-art relative overflow-hidden" aria-label="Portrait of visual designer Erumaka Naphtali">
-            <img className="hero-portrait" src="/naphtali-portrait.jpg" alt="Erumaka Naphtali, visual designer" fetchPriority="high" />
-            <div className="hero-art-label"><span>ERUMAKA<br />NAPHTALI</span><span>OWERRI · NIGERIA</span></div>
-            <div className="hero-art-foot"><span>VISUAL DESIGNER</span><span>BRAND · CAMPAIGN · PRINT</span></div>
+          <div className="hero-art" aria-label="Portrait of visual designer Erumaka Naphtali">
+            <img className="hero-portrait" src="/naphtali-cutout.png" alt="Erumaka Naphtali, visual designer" fetchPriority="high" />
           </div>
         </section>
-
-        <div className="ticker" aria-hidden="true"><div className="ticker-track">VISUAL IDENTITY <b>•</b> CAMPAIGN DESIGN <b>•</b> DIGITAL ARTWORK <b>•</b> BRAND SYSTEMS <b>•</b> VISUAL IDENTITY <b>•</b> CAMPAIGN DESIGN <b>•</b> DIGITAL ARTWORK <b>•</b> BRAND SYSTEMS <b>•</b></div></div>
 
         <section id="work" className="work-section section-wrap">
           <div className="section-heading">
